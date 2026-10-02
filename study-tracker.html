@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
+<title>Study Tracker UT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+:root{--bg:#f3f5fb;--c:#fff;--ink:#161b33;--mu:#6a7391;--ln:#e5e9f5;--pr:#4f46e5;--pl:#eceafd;--ok:#0f9d6e;--wa:#d98a06;--wal:#fff1d6;--rd:#dc3d4a;--rdl:#fde4e6}
+body{font:15px/1.45 'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:radial-gradient(900px 400px at 100% -10%,#e3e1ff,transparent 60%),var(--bg);min-height:100vh;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input,textarea{font:inherit;color:inherit;border:1px solid var(--ln);background:#fff;border-radius:12px;padding:10px 12px;width:100%;outline:none}
+input:focus,textarea:focus,button:focus-visible{border-color:var(--pr);box-shadow:0 0 0 3px #4f46e533;outline:none}
+label{display:grid;gap:4px;font-size:13px;color:var(--mu);font-weight:600}
+main{padding:16px 16px 100px;max-width:760px;margin:0 auto}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;background:#fffffff0;backdrop-filter:blur(14px);border-top:1px solid var(--ln);padding:6px 8px calc(6px + env(safe-area-inset-bottom));z-index:5}
+nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;border-radius:14px;font-size:11px;font-weight:700;color:var(--mu)}
+nav button.on{color:var(--pr);background:var(--pl)}
+nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.cd{background:var(--c);border:1px solid var(--ln);border-radius:18px;padding:14px}
+.hdr small{color:var(--mu);font-weight:600}.hdr b{display:block;font-size:20px;letter-spacing:-.01em;margin-bottom:12px}
+.hero{background:linear-gradient(135deg,#4338ca,#6d5ef5 60%,#8b7bff);color:#fff;border-radius:26px;padding:20px 20px 20px 22px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hero h1{font-size:36px;line-height:1.05;letter-spacing:-.03em;margin:4px 0 6px}
+.hero small,.hero p{opacity:.88}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0 0}
+.st .cd{padding:12px;border-radius:16px}.st b{display:block;font-size:20px}.st small{color:var(--mu);font-weight:600}
+.sec{display:flex;justify-content:space-between;align-items:center;margin:22px 2px 10px}.sec h2{font-size:16px}
+.chip{display:inline-block;padding:4px 11px;border-radius:99px;font-size:12px;font-weight:700;background:var(--pl);color:var(--pr);font-style:normal;white-space:nowrap}
+.chip.rd{background:var(--rdl);color:var(--rd)}.chip.wa{background:var(--wal);color:var(--wa)}.chip.ok{background:#dcf7ec;color:var(--ok)}.chip.sel{background:var(--pr);color:#fff}
+.row{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.mu{color:var(--mu)}small{font-size:12.5px}
+.bar{height:8px;border-radius:9px;background:#e9ecf8;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,#4f46e5,#8b7bff);border-radius:9px;transition:width .35s}
+.grid{display:grid;gap:10px}
+.mk{display:block;width:100%;text-align:left}.mk .bar{margin:10px 0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.btn{display:block;background:var(--pr);color:#fff;border-radius:12px;padding:11px 14px;font-weight:700;text-align:center;cursor:pointer}
+.btn.s{background:var(--pl);color:var(--pr)}.btn.rd{background:var(--rdl);color:var(--rd)}
+.sec .btn{padding:7px 12px;font-size:13px}
+.fm{display:grid;gap:10px}.two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.empty{text-align:center;padding:26px 16px}.empty b{display:block;font-size:17px;margin-bottom:4px}.empty .btn{margin:14px auto 0;max-width:240px}
+.ov{position:fixed;inset:0;background:#161b3366;z-index:10;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);width:100%;max-height:92vh;border-radius:26px 26px 0 0;display:flex;flex-direction:column;animation:up .25s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sheet .hd{padding:16px;border-bottom:1px solid var(--ln);background:#fff;border-radius:26px 26px 0 0}
+.sheet .bd{overflow:auto;padding:14px 14px calc(30px + env(safe-area-inset-bottom))}
+.ic{width:36px;height:36px;border-radius:12px;background:#eef0fa;flex:none}
+.lnk{color:var(--rd);font-size:12.5px;font-weight:700}
+.ss{background:#fff;border:1px solid var(--ln);border-radius:16px;margin-bottom:10px;overflow:hidden}
+.ss.now{border-color:var(--pr);box-shadow:0 0 0 3px #4f46e51a}
+.sh{display:flex;justify-content:space-between;padding:10px 14px;background:#f8f9fe;font-weight:800;font-size:13px}
+.it{display:flex;align-items:center;gap:10px;padding:10px 14px;border-top:1px solid var(--ln)}
+.lb{flex:1;min-width:0;font-weight:600}.lb small{display:block;color:var(--mu);font-weight:400}
+.tg{width:30px;height:30px;border-radius:10px;border:2px solid #cfd4ea;display:grid;place-items:center;flex:none;transition:.15s}
+.tg.on{background:var(--ok);border-color:var(--ok)}.tg svg{width:16px;stroke:#fff;fill:none;stroke-width:3;opacity:0}.tg.on svg{opacity:1}
+.nl{width:74px;padding:8px;text-align:center}
+.nb{position:relative;width:36px;height:36px;border-radius:11px;border:1px solid var(--ln);display:grid;place-items:center;color:var(--mu);flex:none}
+.nb.has{color:var(--wa);border-color:#f3d28f}.nb.has::after{content:'';position:absolute;top:4px;right:4px;width:9px;height:9px;border-radius:9px;background:var(--wa);border:2px solid #fff}
+.nt{padding:0 14px 12px}
+.pr{display:flex;align-items:center;gap:10px;width:100%;text-align:left;padding:10px 12px;background:#fff;border:1px solid var(--ln);border-radius:14px;margin-bottom:8px}
+.pr.on{border-color:var(--pr);background:#f6f5ff}
+.gh{font-weight:800;margin:14px 2px 8px;color:var(--mu);font-size:13px}
+@media(min-width:760px){.g2{grid-template-columns:1fr 1fr}.ov{align-items:center}.sheet{max-width:620px;border-radius:26px}.sheet .hd{border-radius:26px 26px 0 0}}
+@media(min-width:1024px){body{padding-left:200px}main{max-width:900px;padding:32px 40px}nav{top:0;right:auto;width:200px;flex-direction:column;justify-content:flex-start;gap:4px;border-top:0;border-right:1px solid var(--ln);padding:28px 12px}nav button{flex:none;flex-direction:row;gap:10px;font-size:14px;padding:12px 14px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body><div id="app"></div>
+<script>
+const RAW=`1|MKWN4101|Pendidikan Agama Islam|3|L
+1|MKWN4109|Pendidikan Kewarganegaraan|2|L
+1|STMA4112|Matematika Dasar|3|L
+1|STSI4101|Pengantar Sistem Informasi|3|L
+1|STSI4102|Algoritma dan Pemrograman|3|B
+1|STSI4103|Sistem Operasi|3|L
+2|MKDI4201|Bahasa Inggris|3|L
+2|MKDK4201|Pengantar Statistika|3|L
+2|MKWN4108|Bahasa Indonesia|2|L
+2|MKWN4110|Pancasila|2|L
+2|STMA4113|Aljabar Linear Elementer|2|L
+2|STSI4104|Struktur Data|3|L
+2|STSI4105|Basis Data|3|L
+3|MKDI4202|Belajar di Era Digital|3|L
+3|STIK4111|Dasar Pemrograman R|3|L
+3|STSI4106|Logika Informatika|3|L
+3|STSI4201|Pemrograman Berbasis Desktop|3|L
+3|STSI4202|Rekayasa Perangkat Lunak|3|L
+3|STSI4203|Interaksi Manusia dan Komputer|3|L
+3|STSI4205|Jaringan Komputer|3|L
+4|EMBS4207|Perilaku Organisasi|3|L
+4|MKDI4203|Kewirausahaan di Era Digital|3|L
+4|STSI4204|Analisis dan Visualisasi Data|2|L
+4|STSI4206|Proses Bisnis|2|L
+4|STSI4207|Sistem Informasi Manajemen|3|L
+4|STSI4208|Analisis dan Perancangan Sistem|3|L
+4|STSI4209|Pemrograman Berbasis Web|3|L
+5|EMBS4102|Pengantar Bisnis|3|L
+5|FSAP4102|Teori Organisasi|3|L
+5|FSSI4101|Basic Reading|3|L
+5|STMA4111|Kalkulus Diferensial|3|L
+5|STSI4301|Sistem Pendukung Keputusan (Pilihan)|3|L
+5|STSI4303|Pemrograman Berbasis Perangkat Bergerak|3|L
+5|STSI4308|Komunikasi Bisnis dan Teknis|2|B
+6|EMBS4101|Manajemen|4|L
+6|MKKI4301|Pemberdayaan Masyarakat (Pilihan)|3|B
+6|STPL4211|Sistem Informasi Perencanaan (Pilihan)|3|B
+6|STSI4304|Dasar Infrastruktur TI|2|B
+6|STSI4305|Etika Profesi|2|B
+6|STSI4306|Arsitektur dan Perancangan Sistem Enterprise|3|B
+6|STSI4307|Data Mining (Pilihan)|3|B
+6|STSI4309|Administrasi Jaringan (Pilihan)|3|B
+6|STSI4310|Metodologi Penelitian|3|B
+7|STDA4101|Pengantar Sains Data|3|B
+7|STSI4402|Tata Kelola Teknologi Informasi|2|B
+7|STSI4403|Manajemen Risiko dan Audit Sistem Informasi|3|B
+7|STSI4404|Keamanan Jaringan (Pilihan)|3|B
+7|STSI4409|Data Warehouse (Pilihan)|3|B
+7|STSI4440|Capstone Project (Pilihan)|6|B
+8|EACC4207|Sistem Informasi Akuntansi|3|B
+8|STSI4405|Keamanan Sistem Informasi|2|B
+8|STSI4406|Manajemen Proyek Sistem Informasi|2|B
+8|STSI4407|Manajemen Layanan Teknologi Informasi|3|B
+8|STSI4408|E-Bisnis|3|B`;
+const CAT=RAW.split('\n').map(l=>{const a=l.split('|');return{sem:+a[0],code:a[1],name:a[2],sks:+a[3],bl:a[4]==='B'}});
+const K='ut_tracker_v1',$=s=>document.querySelector(s),pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const dt=s=>new Date(s+'T00:00:00'),add=(s,n)=>{const d=dt(s);d.setDate(d.getDate()+n);return iso(d)};
+const diff=(a,b)=>Math.round((dt(a)-dt(b))/864e5);
+const fd=s=>s?dt(s).toLocaleDateString('id-ID',{day:'numeric',month:'short'}):'';
+const fr=(a,b)=>b&&b!==a?fd(a)+' – '+fd(b):fd(a);
+const TODAY=iso(new Date());
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const CK='<svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>';
+const NI='<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v12l-5 5H5zM14 21v-5h5"/></svg>';
+const IC={h:'<svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',b:'<svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>',c:'<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',g:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg>'};
+const ring=(p,z=84)=>`<svg width="${z}" height="${z}" viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-opacity=".25" stroke-width="7"/><circle cx="32" cy="32" r="27" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-dasharray="${1.6965*p} 170" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" font-size="15" font-weight="800" fill="currentColor">${p}%</text></svg>`;
+function gen(st){return[1,2,3,4,5,6,7,8].map(n=>{const t=add(st,(n-1)*7);return[1,2,4,6,8].includes(n)?{tut:t,dis:[t,add(t,6)]}:{tut:t,tgs:[t,add(t,14)]}})}
+function mk(name,start){return{id:'s'+Date.now()+Math.random().toString(36).slice(2,5),name,start,ses:gen(start),courses:[],prog:{},imp:[]}}
+function load(){try{const x=JSON.parse(localStorage.getItem(K));if(x&&x.sems&&x.sems.length)return x}catch(e){}
+const m=mk('2026/2027 Ganjil','2026-09-14');
+m.imp=[['Aktivasi Tuton via MyUT','2026-06-01','2026-08-24'],['Bimbingan TAPS','2026-09-14','2026-11-29'],['Unggah TAPS (artikel ilmiah, skripsi)','2026-10-26','2026-11-29'],['Batas laporan praktik/praktikum','2026-11-29','']];
+return{cur:m.id,sems:[m],custom:[]}}
+let S=load(),V={tab:'home',sheet:null,pick:false,q:'',bl:false,edit:false,note:{}};
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+const sem=()=>S.sems.find(x=>x.id===S.cur)||S.sems[0],all=()=>CAT.concat(S.custom),course=c=>all().find(x=>x.code===c);
+const g=(c,n)=>sem().prog[c+'_'+n]||{};
+const set=(c,n,k,v)=>{const m=sem().prog;(m[c+'_'+n]??={})[k]=v;save()};
+const tn=n=>(n-1)/2,lbl=n=>'Materi Inisiasi dan '+(sem().ses[n-1].dis?'Diskusi '+n:'Tugas '+tn(n));
+function curIdx(){let i=-1;sem().ses.forEach((s,k)=>{if(TODAY>=s.tut)i=k});return i}
+function pct(c){let d=0;sem().ses.forEach((s,i)=>{const r=g(c,i+1);if(r.m)d++;if(s.dis&&r.d)d++;if(s.tgs&&r.t)d++});return Math.round(d/16*100)}
+function cnt(c){let d=0,t=0;sem().ses.forEach((s,i)=>{const r=g(c,i+1);if(s.dis&&r.d)d++;if(s.tgs&&r.t)t++});return{d,t}}
+function vals(cs){const o=[];cs.forEach(c=>sem().ses.forEach((s,i)=>{const r=g(c,i+1);['vd','vt'].forEach(k=>{if(r[k]!==undefined&&r[k]!==''&&!isNaN(+r[k]))o.push(+r[k])})}));return o}
+const avg=cs=>{const v=vals(cs);return v.length?(v.reduce((a,b)=>a+b,0)/v.length).toFixed(1).replace(/\.0$/,''):'–'};
+function dues(){const s=sem(),o=[];s.courses.forEach(c=>s.ses.forEach((x,k)=>{const r=g(c,k+1),n=k+1;
+if(x.dis&&!r.d&&x.dis[1]>=TODAY&&x.dis[0]<=add(TODAY,7))o.push({c,l:'Diskusi '+n,end:x.dis[1],t:0});
+if(x.tgs&&!r.t&&x.tgs[0]<=add(TODAY,7))o.push({c,l:'Tugas '+tn(n),end:x.tgs[1],t:1})}));
+return o.sort((a,b)=>a.end<b.end?-1:1).slice(0,8)}
+function chipD(end){const d=diff(end,TODAY);return d<0?'<i class="chip rd">Terlewat</i>':`<i class="chip ${d<=2?'rd':d<=5?'wa':''}">${d===0?'Hari ini':'H-'+d}</i>`}
+function home(){const s=sem(),i=curIdx(),cs=s.courses,n=i+1;let h;
+if(i<0)h=`<small>Semester belum mulai</small><h1>${diff(s.ses[0].tut,TODAY)} hari lagi</h1><p>Sesi 1 mulai ${fd(s.ses[0].tut)}</p>`;
+else if(TODAY>add(s.ses[7].tut,6))h=`<small>Sesi tuton selesai</small><h1>Semester usai</h1><p>${esc(s.name)}</p>`;
+else h=`<small>Minggu ke-${n} dari 8</small><h1>Sesi ${n}</h1><p>${lbl(n)}</p>`;
+const ov=cs.length?Math.round(cs.reduce((a,c)=>a+pct(c),0)/cs.length):0;
+let tt=0,td=0;cs.forEach(c=>{tt+=3;td+=cnt(c).t});
+const du=dues();
+return`<div class="hdr"><small>Semester aktif</small><b>${esc(s.name)}</b></div>
+<div class="hero"><div>${h}</div><div>${ring(ov)}</div></div>
+<div class="st"><div class="cd"><b>${cs.length}</b><small>Matkul</small></div><div class="cd"><b>${td}/${tt}</b><small>Tugas selesai</small></div><div class="cd"><b>${avg(cs)}</b><small>Rata-rata nilai</small></div></div>
+${cs.length?`<div class="sec"><h2>Tenggat terdekat</h2></div><div class="grid g2">${du.length?du.map(d=>`<button class="cd mk" data-a="open" data-c="${d.c}"><div class="row"><b>${esc(course(d.c).name)}</b>${chipD(d.end)}</div><small class="mu">${d.l}, sampai ${fd(d.end)}${d.t?', 15.00 WIB':''}</small></button>`).join(''):'<div class="cd mu">Tidak ada tenggat dalam 7 hari ke depan.</div>'}</div>`:`<div class="cd empty" style="margin-top:14px"><b>Belum ada matkul</b><span class="mu">Pilih matkul semester ini dari daftar LKAM.</span><button class="btn" data-a="pick">Pilih matkul</button></div>`}
+${s.imp.length?`<div class="sec"><h2>Tanggal penting</h2></div><div class="grid">${s.imp.map(r=>`<div class="cd row"><span style="font-weight:600">${esc(r[0])}</span><i class="chip">${fr(r[1],r[2])}</i></div>`).join('')}</div>`:''}`}
+function mkv(){const s=sem();return`<div class="sec"><h2>Matkul saya</h2><button class="btn s" data-a="pick">Pilih matkul</button></div>
+${s.courses.length?`<div class="grid g2">${s.courses.map(c=>{const o=course(c);if(!o)return'';const p=pct(c),k=cnt(c);return`<button class="cd mk" data-a="open" data-c="${c}"><div class="row"><b>${esc(o.name)}</b><i class="chip">${p}%</i></div><small class="mu">${c} &middot; ${o.sks} SKS</small><div class="bar"><i style="width:${p}%"></i></div><div class="chips"><i class="chip ${k.d===5?'ok':''}">Diskusi ${k.d}/5</i><i class="chip ${k.t===3?'ok':''}">Tugas ${k.t}/3</i><i class="chip wa">Nilai ${avg([c])}</i></div></button>`}).join('')}</div>`:'<div class="cd empty"><b>Belum ada matkul</b><span class="mu">Ketuk Pilih matkul untuk memulai.</span></div>'}`}
+function jd(){const s=sem(),i=curIdx();
+return`<div class="sec"><h2>Jadwal 8 sesi</h2><button class="btn s" data-a="edit">${V.edit?'Selesai':'Edit tanggal'}</button></div><div class="grid g2">${s.ses.map((x,k)=>{const n=k+1,st=i===k?'<i class="chip sel">Berjalan</i>':k<i?'<i class="chip ok">Lewat</i>':'<i class="chip">Akan datang</i>';
+const inp=(l,p,v)=>`<label>${l}<input type="date" value="${v}" data-f="dd" data-p="${p}" data-n="${n}"></label>`;
+const body=V.edit?`<div class="fm" style="margin-top:10px">${inp('Tutorial','tut',x.tut)}${x.dis?`<div class="two">${inp('Diskusi mulai','dis0',x.dis[0])}${inp('Diskusi akhir','dis1',x.dis[1])}</div>`:`<div class="two">${inp('Tugas mulai','tgs0',x.tgs[0])}${inp('Tugas akhir','tgs1',x.tgs[1])}</div>`}</div>`:
+`<div style="margin:8px 0" class="fm"><div class="row"><span class="mu">Tutorial</span><b>${fd(x.tut)}</b></div>${x.dis?`<div class="row"><span class="mu">Diskusi</span><b>${fr(...x.dis)}</b></div>`:`<div class="row"><span class="mu">Tugas ${tn(n)}</span><b>${fr(...x.tgs)}, 15.00 WIB</b></div>`}</div>`;
+return`<div class="cd ss ${i===k?'now':''}" style="padding:14px"><div class="row"><b>Sesi ${n}</b>${st}</div><small class="mu">${lbl(n)}</small>${body}</div>`}).join('')}</div>`}
+function at(){const s=sem();return`<div class="sec"><h2>Semester</h2></div>
+<div class="cd fm"><div class="chips">${S.sems.map(x=>`<button class="chip ${x.id===s.id?'sel':''}" data-a="sem" data-i="${x.id}">${esc(x.name)}</button>`).join('')}</div>
+<input id="nn" placeholder="Nama, mis. 2027/2028 Genap"><label>Tanggal mulai sesi 1<input id="ns" type="date"></label><button class="btn" data-a="newsem">Tambah semester</button></div>
+<div class="sec"><h2>Semester aktif</h2></div>
+<div class="cd fm"><label>Nama<input value="${esc(s.name)}" data-f="sname"></label><label>Tanggal mulai sesi 1<input type="date" value="${s.start}" data-f="sstart"></label><button class="btn s" data-a="regen">Buat ulang jadwal dari tanggal mulai</button><button class="btn s" data-a="pick">Pilih matkul (${s.courses.length})</button>${S.sems.length>1?'<button class="btn rd" data-a="delsem">Hapus semester ini</button>':''}</div>
+<div class="sec"><h2>Tanggal penting</h2><button class="btn s" data-a="addimp">Tambah</button></div>
+<div class="grid g2">${s.imp.map((r,i)=>`<div class="cd fm"><input value="${esc(r[0])}" placeholder="Keterangan" data-f="im" data-i="${i}" data-p="0"><div class="two"><input type="date" value="${r[1]||''}" data-f="im" data-i="${i}" data-p="1"><input type="date" value="${r[2]||''}" data-f="im" data-i="${i}" data-p="2"></div><button class="btn s rd" data-a="delimp" data-i="${i}">Hapus</button></div>`).join('')}</div>
+<div class="sec"><h2>Cadangan data</h2></div><div class="cd fm"><small class="mu">Data tersimpan di browser ini. Ekspor cadangan sebelum ganti HP atau hapus data browser.</small><button class="btn s" data-a="exp">Ekspor cadangan (.json)</button><label class="btn s">Impor cadangan<input id="fi" type="file" accept=".json" hidden></label></div>`}
+function blk(c,x,n,i){const r=g(c,n);
+const it=(k,l,sub)=>{const key=c+'_'+n+k,has=(r['n'+k]||'').trim();
+return`<div class="it"><button class="tg ${r[k]?'on':''}" data-a="tg" data-c="${c}" data-n="${n}" data-k="${k}" aria-label="${l}">${CK}</button><span class="lb">${l}<small>${sub}</small></span><input class="nl" type="number" inputmode="decimal" min="0" max="100" placeholder="Nilai" value="${esc(r['v'+k]??'')}" data-f="v${k}" data-c="${c}" data-n="${n}"><button class="nb ${has?'has':''}" data-a="note" data-c="${c}" data-n="${n}" data-k="${k}" aria-label="Catatan">${NI}</button></div>${V.note[key]?`<div class="nt"><textarea rows="3" placeholder="Catatan..." data-f="n${k}" data-c="${c}" data-n="${n}">${esc(r['n'+k]||'')}</textarea></div>`:''}`};
+return`<div class="ss ${i===n-1?'now':''}"><div class="sh"><span>Sesi ${n}</span><span class="mu">${fd(x.tut)}${i===n-1?' <b style="color:var(--pr)">Sekarang</b>':''}</span></div>
+<div class="it"><button class="tg ${r.m?'on':''}" data-a="tg" data-c="${c}" data-n="${n}" data-k="m" aria-label="Materi">${CK}</button><span class="lb">Baca materi inisiasi</span></div>
+${x.dis?it('d','Diskusi '+n,fr(...x.dis)):it('t','Tugas '+tn(n),fr(...x.tgs)+', 15.00 WIB')}</div>`}
+function sheet(){const s=sem(),c=course(V.sheet);if(!c)return'';const p=pct(c.code),i=curIdx();
+return`<div class="ov" data-a="bg"><div class="sheet"><div class="hd"><div class="row"><div><b style="font-size:17px">${esc(c.name)}</b><br><small class="mu">${c.code} &middot; ${c.sks} SKS</small></div><button class="ic" data-a="close" aria-label="Tutup">&#10005;</button></div><div class="bar" style="margin-top:10px"><i style="width:${p}%"></i></div><div class="row" style="margin-top:6px"><small class="mu">${p}% selesai</small><button class="lnk" data-a="rm" data-c="${c.code}">Lepas matkul</button></div></div><div class="bd">${s.ses.map((x,k)=>blk(c.code,x,k+1,i)).join('')}</div></div></div>`}
+function plist(){const s=sem(),q=V.q.toLowerCase();let o='';
+for(let m=0;m<=8;m++){const rows=all().filter(c=>(c.sem||0)===m&&(!V.bl||c.bl)&&(c.name+c.code).toLowerCase().includes(q));if(!rows.length)continue;
+o+=`<div class="gh">${m?'Semester '+m:'Tambahan'}</div>`+rows.map(c=>{const on=s.courses.includes(c.code);return`<button class="pr ${on?'on':''}" data-a="pc" data-c="${c.code}"><span class="tg ${on?'on':''}">${CK}</span><span class="lb">${esc(c.name)}<small>${c.code} &middot; ${c.sks} SKS</small></span>${c.bl?'<i class="chip wa">Belum lulus</i>':''}</button>`}).join('')}
+return o||'<div class="cd mu">Tidak ada matkul yang cocok.</div>'}
+function picker(){return`<div class="ov" data-a="bg"><div class="sheet"><div class="hd"><div class="row"><b style="font-size:17px">Pilih matkul</b><button class="ic" data-a="close" aria-label="Tutup">&#10005;</button></div><small class="mu" id="pcnt">${sem().courses.length} dipilih</small><input id="q" placeholder="Cari nama atau kode" value="${esc(V.q)}" style="margin-top:10px"><div class="chips" style="margin-top:8px"><button class="chip ${V.bl?'sel':''}" data-a="blf">Belum lulus saja</button></div></div><div class="bd"><div id="pl">${plist()}</div><div class="gh">Tambah matkul sendiri</div><div class="cd fm"><input id="cc" placeholder="Kode (opsional)"><input id="cn" placeholder="Nama matkul"><input id="cs" type="number" placeholder="SKS" inputmode="numeric"><button class="btn" data-a="addc">Tambah dan pilih</button></div></div></div></div>`}
+function render(){const b=$('.sheet .bd'),y=b?b.scrollTop:0,s=sem();
+const T=[['home','Beranda',IC.h],['mk','Matkul',IC.b],['jd','Jadwal',IC.c],['at','Atur',IC.g]];
+$('#app').innerHTML=`<nav>${T.map(t=>`<button class="${V.tab===t[0]?'on':''}" data-a="tab" data-t="${t[0]}">${t[2]}${t[1]}</button>`).join('')}</nav><main>${{home,mk:mkv,jd,at}[V.tab]()}</main>${V.sheet?sheet():''}${V.pick?picker():''}`;
+const n=$('.sheet .bd');if(n)n.scrollTop=y}
+const refreshPick=()=>{$('#pl').innerHTML=plist();$('#pcnt').textContent=sem().courses.length+' dipilih'};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const a=t.dataset.a,s=sem(),c=t.dataset.c,n=+t.dataset.n;
+if(a==='bg'){if(e.target!==t)return;V.sheet=null;V.pick=false}
+else if(a==='close'){V.sheet=null;V.pick=false}
+else if(a==='tab'){V.tab=t.dataset.t;scrollTo(0,0)}
+else if(a==='open')V.sheet=c;
+else if(a==='tg')set(c,n,t.dataset.k,!g(c,n)[t.dataset.k]);
+else if(a==='note'){const k=c+'_'+n+t.dataset.k;V.note[k]=!V.note[k]}
+else if(a==='pick'){V.pick=true;V.q='';V.bl=false;V.sheet=null}
+else if(a==='pc'){const i=s.courses.indexOf(c);i<0?s.courses.push(c):s.courses.splice(i,1);save();refreshPick();return}
+else if(a==='blf')V.bl=!V.bl;
+else if(a==='addc'){const nm=$('#cn').value.trim();if(!nm)return;const code=($('#cc').value.trim()||'CUSTOM'+Date.now()).toUpperCase();S.custom.push({sem:0,code,name:nm,sks:+$('#cs').value||0,bl:false});s.courses.push(code);save();render();return}
+else if(a==='rm'){if(!confirm('Lepas matkul ini dari semester? Progres tetap tersimpan.'))return;s.courses=s.courses.filter(x=>x!==c);V.sheet=null}
+else if(a==='sem'){S.cur=t.dataset.i}
+else if(a==='newsem'){const m=mk($('#nn').value.trim()||'Semester baru',$('#ns').value||TODAY);S.sems.push(m);S.cur=m.id;V.tab='home'}
+else if(a==='regen'){if(!confirm('Jadwal 8 sesi dibuat ulang dan tanggal yang kamu edit akan hilang. Lanjut?'))return;s.ses=gen(s.start)}
+else if(a==='delsem'){if(!confirm('Hapus semester ini beserta semua progresnya?'))return;S.sems=S.sems.filter(x=>x.id!==s.id);S.cur=S.sems[0].id}
+else if(a==='edit')V.edit=!V.edit;
+else if(a==='addimp')s.imp.push(['Tanggal baru',TODAY,'']);
+else if(a==='delimp')s.imp.splice(+t.dataset.i,1);
+else if(a==='exp'){const u=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'})),l=document.createElement('a');l.href=u;l.download='study-tracker-backup.json';l.click();return}
+save();render()});
+document.addEventListener('input',e=>{if(e.target.id==='q'){V.q=e.target.value;refreshPick()}});
+document.addEventListener('change',e=>{const t=e.target,f=t.dataset.f,s=sem(),c=t.dataset.c,n=+t.dataset.n,v=t.value;
+if(t.id==='fi'){const r=new FileReader();r.onload=()=>{try{const x=JSON.parse(r.result);if(!x.sems||!x.sems.length)throw 0;S=x;S.custom=S.custom||[];save();render()}catch(_){alert('File cadangan tidak valid.')}};if(t.files[0])r.readAsText(t.files[0]);return}
+if(!f)return;
+if(['vd','vt','nd','nt'].includes(f)){set(c,n,f,v);if(f[0]==='n')render();return}
+if(f==='dd'){const x=s.ses[n-1],p=t.dataset.p;if(p==='tut')x.tut=v;else x[p.slice(0,3)][+p[3]]=v}
+else if(f==='sname')s.name=v;else if(f==='sstart')s.start=v;
+else if(f==='im')s.imp[+t.dataset.i][+t.dataset.p]=v;
+save();render()});
+render();
+</script></body></html>
